@@ -1,18 +1,18 @@
 // sw.js
-const CACHE_NAME = 'app-cache-v4';   // bump this every time you ship
+const CACHE_NAME = 'app-cache-v6';
+
+const ASSETS = [
+  './',
+  './index.html',
+  './manifest.json?v=6',
+  './icons/icon-192.png?v=6',
+  './icons/icon-512.png?v=6'
+];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache =>
-      cache.addAll([
-        './',
-        './index.html',
-        './manifest.json?v=4',
-        './icons/icon-192.png?v=4',
-        './icons/icon-512.png?v=4'
-      ])
-    )
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
 });
 
@@ -25,8 +25,22 @@ self.addEventListener('activate', event => {
   return self.clients.claim();
 });
 
+// Always serve the SPA shell for navigations, and ignore query strings for cache hits
 self.addEventListener('fetch', event => {
+  const req = event.request;
+
+  // App page loads and address bar navigations
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      caches.match('./index.html', { ignoreSearch: true })
+        .then(resp => resp || fetch('./index.html'))
+        .catch(() => caches.match('./index.html', { ignoreSearch: true }))
+    );
+    return;
+  }
+
+  // Static files and API requests
   event.respondWith(
-    caches.match(event.request).then(resp => resp || fetch(event.request))
+    caches.match(req, { ignoreSearch: true }).then(resp => resp || fetch(req))
   );
 });
