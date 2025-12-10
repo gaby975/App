@@ -1,7 +1,7 @@
 {
   "name": "My Vocabulary",
   "short_name": "Vocab",
-  "start_url": "./index.html?v=6",
+  "start_url": "./index.html?v=7",
   "display": "standalone",
   "background_color": "#2563eb",
   "theme_color": "#2563eb",
@@ -10,3 +10,4 @@
     { "src": "icons/icon-512.png?v=6", "sizes": "512x512", "type": "image/png" }
   ]
 }
+
