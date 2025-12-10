@@ -829,10 +829,92 @@
     body.dark td.rules-col-examples {
       color: #9ca3af;
     }
-
+    /* -------- Mobile tweaks -------- */
+    @media (max-width: 640px) {
+      html, body { height: 100%; }
+      body { padding: 12px 0 20px; }
+    
+      .app-shell {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        padding: 14px 12px 20px;
+      }
+    
+      h1 { font-size: clamp(1.3rem, 4.5vw, 1.6rem); }
+    
+      .top-bar { gap: 8px; }
+      .top-bar h1 { font-size: 1.25rem; }
+    
+      .tab-bar {
+        overflow-x: auto;
+        white-space: nowrap;
+        gap: 4px;
+      }
+    
+      form {
+        grid-template-columns: 1fr;       /* single column form */
+        gap: 8px;
+        padding: 12px;
+      }
+    
+      /* Bigger touch targets and avoid iOS zoom on focus */
+      input, select, textarea, button {
+        min-height: 44px;
+        font-size: 16px;
+      }
+    
+      /* Controls stack cleanly */
+      .controls { gap: 8px; padding: 8px 10px; }
+    
+      /* Make the big table readable as stacked cards */
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }                     /* hide header row on phones */
+    
+      tbody tr {
+        margin: 10px 0;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+      }
+    
+      td {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 10px 12px;
+      }
+      td:last-child { border-bottom: none; }
+    
+      /* Show the column name before each value */
+      td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #64748b;
+        flex: 0 0 38%;
+        max-width: 42%;
+      }
+    
+      /* Keep pills and long text wrapping nicely */
+      .col-meaning, .col-comment { white-space: normal; }
+      .actions-cell { justify-content: flex-end; }
+      .actions-cell button { min-height: 36px; padding: 6px 10px; }
+    }
+    
+    /* Respect the iOS notch when installed as a PWA */
+    @supports(padding: max(0px)) {
+      body {
+        padding-top: max(12px, env(safe-area-inset-top));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+      }
+    }  
   </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="icons/icon-192.png" sizes="192x192">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1580,33 +1662,33 @@
       const renderRow = (item) => {
         const tr = document.createElement('tr');
         tr.dataset.id = item.id;
-
+      
         const typeClass = (item.type || '').toLowerCase();
         const typeCell = item.type
           ? `<span class="type-pill type-${typeClass}">${escapeHtml(item.type)}</span>`
           : '';
-
+      
         const diffLabel = getDifficultyLabel(item);
         const diffClass = diffLabel.toLowerCase();
-        const difficultyCell =
-          `<span class="difficulty-pill diff-${diffClass}">${diffLabel}</span>`;
-
+        const difficultyCell = `<span class="difficulty-pill diff-${diffClass}">${diffLabel}</span>`;
+      
         tr.innerHTML = `
-        <td class="word-col">
-          ${buildPillGroup(item.word, 'word-pill')}
-        </td>
-        <td>${buildPillGroup(item.fr, 'fr-pill')}</td>
-          <td>${typeCell}</td>
-          <td>${difficultyCell}</td>
-          <td class="col-meaning">${item.meaning ? escapeHtml(item.meaning) : ''}</td>
-          <td class="col-comment">${item.comment ? escapeHtml(item.comment) : ''}</td>
-          <td class="actions-cell">
+          <td class="word-col" data-label="Word">
+            ${buildPillGroup(item.word, 'word-pill')}
+          </td>
+          <td data-label="FR">${buildPillGroup(item.fr, 'fr-pill')}</td>
+          <td data-label="Type">${typeCell}</td>
+          <td data-label="Difficulty">${difficultyCell}</td>
+          <td class="col-meaning" data-label="Meaning">${item.meaning ? escapeHtml(item.meaning) : ''}</td>
+          <td class="col-comment" data-label="Comment">${item.comment ? escapeHtml(item.comment) : ''}</td>
+          <td class="actions-cell" data-label="Actions">
             <button type="button" class="edit-btn" title="Edit">✏</button>
             <button type="button" class="delete-btn" title="Delete">✕</button>
           </td>
         `;
         tbody.appendChild(tr);
       };
+
 
       if (pageSize === 'all') {
         totalPages = 1;
@@ -2681,3 +2763,4 @@
 </script>
 </body>
 </html>
+
