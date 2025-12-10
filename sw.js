@@ -1,12 +1,12 @@
 // sw.js
-const CACHE_NAME = 'app-cache-v6';
+const CACHE_NAME = 'app-cache-v7';
 
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json?v=6',
-  './icons/icon-192.png?v=6',
-  './icons/icon-512.png?v=6'
+  './manifest.json?v=7',
+  './icons/icon-192.png?v=7',
+  './icons/icon-512.png?v=7'
 ];
 
 self.addEventListener('install', event => {
@@ -44,3 +44,4 @@ self.addEventListener('fetch', event => {
     caches.match(req, { ignoreSearch: true }).then(resp => resp || fetch(req))
   );
 });
+
