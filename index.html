@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Vocabulary List</title>
   <style>
     body {
@@ -829,88 +830,69 @@
     body.dark td.rules-col-examples {
       color: #9ca3af;
     }
-    /* -------- Mobile tweaks -------- */
-    @media (max-width: 640px) {
-      html, body { height: 100%; }
-      body { padding: 12px 0 20px; }
+    /* Phone layout */
+    @media (max-width: 720px) {
+      body { padding: 12px 0 28px; }
+      .app-shell { margin: 0 8px; padding: 14px 12px 20px; }
+      h1 { font-size: 1.6rem; }
     
-      .app-shell {
-        max-width: 100%;
-        margin: 0;
-        border-radius: 0;
-        padding: 14px 12px 20px;
-      }
+      /* Forms and controls in a single column */
+      form { grid-template-columns: 1fr; }
+      .controls { padding: 10px; }
+      #table-controls { align-items: stretch; }
+      #table-controls .control-search input { max-width: 100%; }
     
-      h1 { font-size: clamp(1.3rem, 4.5vw, 1.6rem); }
-    
-      .top-bar { gap: 8px; }
-      .top-bar h1 { font-size: 1.25rem; }
-    
-      .tab-bar {
-        overflow-x: auto;
-        white-space: nowrap;
-        gap: 4px;
-      }
-    
-      form {
-        grid-template-columns: 1fr;       /* single column form */
-        gap: 8px;
-        padding: 12px;
-      }
-    
-      /* Bigger touch targets and avoid iOS zoom on focus */
-      input, select, textarea, button {
-        min-height: 44px;
-        font-size: 16px;
-      }
-    
-      /* Controls stack cleanly */
-      .controls { gap: 8px; padding: 8px 10px; }
-    
-      /* Make the big table readable as stacked cards */
+      /* Turn tables into stacked cards */
       table, thead, tbody, th, td, tr { display: block; }
-      thead { display: none; }                     /* hide header row on phones */
-    
+      thead {
+        position: absolute; width: 1px; height: 1px; margin: -1px;
+        clip: rect(0 0 0 0); overflow: hidden;
+      }
       tbody tr {
-        margin: 10px 0;
-        border: 1px solid #e5e7eb;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #fff;
+        margin: 12px 0;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 10px;
+        background: #ffffff;
       }
-    
+      body.dark tbody tr {
+        border-color: #1f2937;
+        background: #0f172a;
+      }
       td {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        border: none;
-        border-bottom: 1px solid #eee;
-        padding: 10px 12px;
+        border: 0;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 8px 10px;
+        display: grid;
+        grid-template-columns: 108px 1fr;  /* label | value */
+        gap: 8px;
       }
-      td:last-child { border-bottom: none; }
+      body.dark td { border-bottom-color: #1f2937; }
+      td:last-child { border-bottom: 0; }
     
       /* Show the column name before each value */
       td::before {
         content: attr(data-label);
         font-weight: 600;
         color: #64748b;
-        flex: 0 0 38%;
-        max-width: 42%;
       }
+      body.dark td::before { color: #9ca3af; }
     
-      /* Keep pills and long text wrapping nicely */
-      .col-meaning, .col-comment { white-space: normal; }
-      .actions-cell { justify-content: flex-end; }
-      .actions-cell button { min-height: 36px; padding: 6px 10px; }
+      /* Remove desktop width constraints on phone */
+      th.col-meaning, td.col-meaning,
+      th.col-comment, td.col-comment,
+      th.rules-col-title, td.rules-col-title,
+      th.rules-col-explanation, td.rules-col-explanation,
+      th.rules-col-examples, td.rules-col-examples { width: auto; }
+    
+      /* Action buttons row */
+      .actions-cell { display: flex; justify-content: flex-end; gap: 6px; }
     }
     
-    /* Respect the iOS notch when installed as a PWA */
-    @supports(padding: max(0px)) {
-      body {
-        padding-top: max(12px, env(safe-area-inset-top));
-        padding-bottom: max(20px, env(safe-area-inset-bottom));
-      }
-    }  
+    /* Do not try to auto-widen the first column on phones */
+    @media (max-width: 720px) {
+      .word-col, th.word-col { width: auto !important; }
+    }
   </style>
 <link rel="manifest" href="manifest.json?v=6">
 <meta name="theme-color" content="#2563eb">
@@ -1222,27 +1204,31 @@
   <script>
     // ---------- Helpers ----------
     function adjustWordColumnWidth() {
+      const isPhone = window.matchMedia('(max-width: 640px)').matches;
+    
       const table = document.querySelector('table');
       if (!table) return;
-
+    
       const wordHeader = table.querySelector('thead th:nth-child(1)');
-      const wordCells = table.querySelectorAll('tbody tr td:nth-child(1)');
+      const wordCells  = table.querySelectorAll('tbody tr td:nth-child(1)');
       if (!wordHeader || !wordCells.length) return;
-
+    
+      // On phones the table becomes cards, so remove any inline widths and stop.
+      if (isPhone) {
+        wordHeader.style.width = '';
+        wordCells.forEach(c => { c.style.width = ''; });
+        return;
+      }
+    
       let maxWidth = 0;
-
       wordCells.forEach(cell => {
-        const w = cell.scrollWidth; // includes the pill(s)
+        const w = cell.scrollWidth;
         if (w > maxWidth) maxWidth = w;
       });
-
-      const padding = 12;
-      const targetWidth = maxWidth + padding + 'px';
-
+    
+      const targetWidth = (maxWidth + 12) + 'px';
       wordHeader.style.width = targetWidth;
-      wordCells.forEach(cell => {
-        cell.style.width = targetWidth;
-      });
+      wordCells.forEach(cell => { cell.style.width = targetWidth; });
     }
     // ---------- Theme toggle ----------
     const THEME_KEY = 'vocab_theme';
@@ -1679,8 +1665,12 @@
           <td data-label="FR">${buildPillGroup(item.fr, 'fr-pill')}</td>
           <td data-label="Type">${typeCell}</td>
           <td data-label="Difficulty">${difficultyCell}</td>
-          <td class="col-meaning" data-label="Meaning">${item.meaning ? escapeHtml(item.meaning) : ''}</td>
-          <td class="col-comment" data-label="Comment">${item.comment ? escapeHtml(item.comment) : ''}</td>
+          <td class="col-meaning" data-label="Meaning">
+            ${item.meaning ? escapeHtml(item.meaning) : ''}
+          </td>
+          <td class="col-comment" data-label="Comment">
+            ${item.comment ? escapeHtml(item.comment) : ''}
+          </td>
           <td class="actions-cell" data-label="Actions">
             <button type="button" class="edit-btn" title="Edit">✏</button>
             <button type="button" class="delete-btn" title="Delete">✕</button>
@@ -2490,20 +2480,14 @@
           : '';
 
         tr.innerHTML = `
-          <td class="rules-col-title">${titleText}</td>
-          <td>${categoryCell}</td>
-          <td class="rules-col-explanation">${shortExplanation}</td>
-          <td class="rules-col-examples">${firstExample}</td>
-          <td class="actions-cell">
-            <button type="button"
-                    class="edit-btn details-rule-btn"
-                    title="Show details">ℹ</button>
-            <button type="button"
-                    class="edit-btn edit-rule-btn"
-                    title="Edit rule">✏</button>
-            <button type="button"
-                    class="delete-btn delete-rule-btn"
-                    title="Delete rule">✕</button>
+          <td class="rules-col-title" data-label="Title">${titleText}</td>
+          <td data-label="Category">${categoryCell}</td>
+          <td class="rules-col-explanation" data-label="Explanation">${shortExplanation}</td>
+          <td class="rules-col-examples" data-label="Examples">${firstExample}</td>
+          <td class="actions-cell" data-label="Actions">
+            <button type="button" class="edit-btn details-rule-btn" title="Show details">ℹ</button>
+            <button type="button" class="edit-btn edit-rule-btn" title="Edit rule">✏</button>
+            <button type="button" class="delete-btn delete-rule-btn" title="Delete rule">✕</button>
           </td>
         `;
         rulesBody.appendChild(tr);
@@ -2763,6 +2747,7 @@
 </script>
 </body>
 </html>
+
 
 
 
