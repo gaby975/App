@@ -1,5 +1,5 @@
 // sw.js
-const CACHE_NAME = 'app-cache-v7';
+const CACHE_NAME = 'app-cache-v8';
 
 const ASSETS = [
   './',
@@ -44,5 +44,6 @@ self.addEventListener('fetch', event => {
     caches.match(req, { ignoreSearch: true }).then(resp => resp || fetch(req))
   );
 });
+
 
 
