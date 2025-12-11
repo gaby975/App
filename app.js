@@ -341,10 +341,15 @@ tbody.addEventListener('click', event => {
     renderTable();
   }
 });
+
+
 // Close any open kebab menus when tapping elsewhere
+function closeKebabs() {
+  document.querySelectorAll('.kebab-menu').forEach(m => m.remove());
+}
 document.addEventListener('click', (e) => {
   if (e.target.closest('.kebab-btn') || e.target.closest('.kebab-menu')) return;
-  document.querySelectorAll('.kebab-menu').forEach(m => m.remove());
+  closeKebabs();
 });
 
 // Vocab kebab
