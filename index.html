@@ -1961,40 +1961,6 @@
       }, { once: true });
     });
     
-    // Rules kebab
-    rulesBody?.addEventListener('click', (e) => {
-      const kb = e.target.closest('.kebab-btn');
-      if (!kb) return;
-      e.stopPropagation();
-      const tr = kb.closest('tr');
-      let menu = tr.querySelector('.kebab-menu');
-      if (menu) { menu.remove(); return; }
-      menu = document.createElement('div');
-      menu.className = 'kebab-menu';
-      menu.innerHTML = `
-        <button data-act="details-rule">Show details</button>
-        <button data-act="edit-rule">Edit</button>
-        <button data-act="delete-rule">Delete</button>
-      `;
-      tr.appendChild(menu);
-    
-      menu.addEventListener('click', (ev) => {
-        const id = tr.dataset.id;
-        if (ev.target.dataset.act === 'details-rule') {
-          tr.querySelector('.details-rule-btn')?.click();
-        }
-        if (ev.target.dataset.act === 'edit-rule') {
-          tr.querySelector('.edit-rule-btn')?.click();
-        }
-        if (ev.target.dataset.act === 'delete-rule') {
-          tr.querySelector('.delete-rule-btn')?.click();
-        }
-        menu.remove();
-      }, { once: true });
-    });
-
-
-
     function resetPageAndRender() {
       currentPage = 1;
       renderTable();
@@ -2570,6 +2536,33 @@
     const rulesFilterCategory = document.getElementById('rules-filter-category');
     const rulesSortBy = document.getElementById('rules-sort-by');
 
+
+    // Rules kebab safe even before the const is declared
+    document.getElementById('rules-body')?.addEventListener('click', (e) => {
+      const kb = e.target.closest('.kebab-btn');
+      if (!kb) return;
+      e.stopPropagation();
+      const tr = kb.closest('tr');
+      let menu = tr.querySelector('.kebab-menu');
+      if (menu) { menu.remove(); return; }
+      menu = document.createElement('div');
+      menu.className = 'kebab-menu';
+      menu.innerHTML = `
+        <button data-act="details-rule">Show details</button>
+        <button data-act="edit-rule">Edit</button>
+        <button data-act="delete-rule">Delete</button>
+      `;
+      tr.appendChild(menu);
+    
+      menu.addEventListener('click', (ev) => {
+        const id = tr.dataset.id;
+        if (ev.target.dataset.act === 'details-rule') tr.querySelector('.details-rule-btn')?.click();
+        if (ev.target.dataset.act === 'edit-rule')    tr.querySelector('.edit-rule-btn')?.click();
+        if (ev.target.dataset.act === 'delete-rule')  tr.querySelector('.delete-rule-btn')?.click();
+        menu.remove();
+      }, { once: true });
+    });
+
     function resetRuleEditing() {
       editingRuleId = null;
       rulesForm.reset();
@@ -2935,6 +2928,7 @@
 </script>
 </body>
 </html>
+
 
 
 
