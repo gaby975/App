@@ -1,5 +1,10 @@
 // ---------- Combined vocab + rules export / import (JSON only) ----------
 
+const exportAllVocabBtn   = document.getElementById('export-all-vocab-btn');
+const importAllVocabInput = document.getElementById('import-all-vocab-input');
+const exportAllRulesBtn   = document.getElementById('export-all-rules-btn');
+const importAllRulesInput = document.getElementById('import-all-rules-input');
+
 function buildExportData() {
   return {
     version: 1,
@@ -31,7 +36,6 @@ function importAllFromText(text) {
   let importedRulesRaw = [];
 
   if (Array.isArray(parsed)) {
-    // simple array, treat as vocab only
     importedVocabRaw = parsed;
   } else {
     if (Array.isArray(parsed.vocab)) importedVocabRaw = parsed.vocab;
@@ -91,6 +95,7 @@ function attachAllImport(inputElement) {
       } catch (err) {
         alert('Could not import data: ' + err.message);
       } finally {
+        // allow reusing the same file name later
         event.target.value = '';
       }
     };
@@ -98,8 +103,13 @@ function attachAllImport(inputElement) {
   });
 }
 
-// hook buttons in both tabs
-exportAllVocabBtn?.addEventListener('click', exportAllData);
-exportAllRulesBtn?.addEventListener('click', exportAllData);
+// Hook buttons in both tabs
+if (exportAllVocabBtn) {
+  exportAllVocabBtn.addEventListener('click', exportAllData);
+}
+if (exportAllRulesBtn) {
+  exportAllRulesBtn.addEventListener('click', exportAllData);
+}
+
 attachAllImport(importAllVocabInput);
 attachAllImport(importAllRulesInput);
