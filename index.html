@@ -892,35 +892,7 @@
     @media (max-width: 720px) {
       .word-col, th.word-col { width: auto !important; }
     }
-    /* --- Fix mobile cards layout for BOTH tables --- */
-    @media (max-width: 720px) {
-      /* make sure the VALUE sits in column 2, the ::before label stays in column 1 */
-      td > * { grid-column: 2; }
-    
-      /* pills should size to content, not stretch */
-      .word-pill,
-      .fr-pill,
-      .type-pill,
-      .difficulty-pill {
-        display: inline-block;
-        width: auto;
-        max-width: 100%;
-      }
-    
-      /* action buttons row: remove desktop width and align to the right */
-      .actions-cell {
-        width: auto;                 /* override desktop 70px */
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 6px;
-        white-space: nowrap;
-      }
-      .actions-cell button {
-        min-height: 36px;
-        padding: 6px 10px;
-      }
-    }
+
     /* Keep pills tidy on any narrow container */
     .word-pill, .fr-pill { white-space: nowrap; }
     .collapsible {
@@ -940,19 +912,30 @@
     
     body.dark .collapsible { background:#020617; border-color:#1f2937; }
     body.dark .collapsible > summary { color:#e5e7eb; }
+
     @media (max-width: 720px) {
-      td { display: grid; grid-template-columns: 108px 1fr; align-items: start; }
-      td::before { grid-column: 1; }
-      td > * { grid-column: 2; justify-self: start; }
+      td {
+        display: grid;
+        grid-template-columns: 108px 1fr;
+        align-items: start;
+        border: 0;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 8px 10px;
+      }
+      td::before { grid-column: 1; font-weight: 600; color: #64748b; }
+      td > * { grid-column: 2; justify-self: start; }   /* key line */
     
-      .word-pill, .fr-pill, .type-pill, .difficulty-pill {
+      .word-pill,
+      .fr-pill,
+      .type-pill,
+      .difficulty-pill {
         display: inline-block;
         width: auto;
         max-width: 100%;
         white-space: nowrap;
       }
     
-      /* Hide desktop action cell and use a kebab menu instead */
+      /* hide the desktop action cell and use the kebab */
       .actions-cell { display: none; }
     
       tbody tr { position: relative; }
@@ -962,12 +945,29 @@
         width: 32px; height: 32px;
         border-radius: 999px;
         border: 1px solid #cbd5e1;
-        background: #ffffff;
-        display: none;              /* only show on phones */
+        background: #fff;
+        display: inline-flex;
         align-items: center; justify-content: center;
-        font-size: 18px; line-height: 1;
+        font-size: 18px;
         z-index: 2;
       }
+      .kebab-menu {
+        position: absolute;
+        right: 10px; top: 44px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(15,23,42,.15);
+        overflow: hidden;
+        z-index: 3;
+      }
+      .kebab-menu button { display: block; width: 140px; padding: 10px 12px; border: 0; background: transparent; text-align: left; }
+      .kebab-menu button:hover { background: #f1f5f9; }
+    }
+
+
+
+    
       /* show kebab on phones */
       .kebab-btn { display: inline-flex; }
     
@@ -992,7 +992,7 @@
       body.dark .kebab-menu button:hover { background:#111827; }
     }
   </style>
-<link rel="manifest" href="manifest.json?v=9">
+<link rel="manifest" href="manifest.json?v=10">
 <meta name="theme-color" content="#2563eb">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="icons/icon-192.png" sizes="192x192">
@@ -1334,6 +1334,9 @@
       wordHeader.style.width = targetWidth;
       wordCells.forEach(cell => { cell.style.width = targetWidth; });
     }
+    window.addEventListener('resize', () => {
+      requestAnimationFrame(adjustWordColumnWidth);
+    });
     // ---------- Theme toggle ----------
     const THEME_KEY = 'vocab_theme';
     // ---------- Voice selection (Google UK English only) ----------
@@ -2403,7 +2406,10 @@
       // still in quiz-running mode here, so the rest of the tab stays hidden
       renderTable();
     }
-
+    function closeKebabs() {
+      document.querySelectorAll('.kebab-menu').forEach(m => m.remove());
+    }
+    
     function closeSummaryAndRestore() {
       inSummary = false;
       quizArea.style.display = 'none';
@@ -2479,17 +2485,20 @@
     // ---------- Tabs ----------
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabPages = document.querySelectorAll('.tab-page');
-
+    
     tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const targetId = btn.dataset.tab;
-
+    
         tabButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
+    
         tabPages.forEach(page => {
           page.classList.toggle('hidden', page.id !== targetId);
         });
+    
+        // close any open kebab when changing tab
+        closeKebabs();
       });
     });
     // ---------- Rules storage & UI ----------
@@ -2928,6 +2937,7 @@
 </script>
 </body>
 </html>
+
 
 
 
