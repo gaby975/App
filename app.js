@@ -381,12 +381,6 @@ nextPageBtn.addEventListener('click', () => {
   }
 });
 
-
-function closeKebabs() {
-  document.querySelectorAll('.kebab-menu').forEach(m => m.remove());
-}
-
-
 // ---------- Tabs ----------
 const tabButtons = document.querySelectorAll('.tab-button');
 const tabPages = document.querySelectorAll('.tab-page');
