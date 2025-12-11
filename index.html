@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Vocabulary List</title>
   <style>
     body {
@@ -924,8 +923,76 @@
     }
     /* Keep pills tidy on any narrow container */
     .word-pill, .fr-pill { white-space: nowrap; }
+    .collapsible {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #f8fafc;
+      margin-bottom: 16px;
+    }
+    .collapsible > summary {
+      cursor: pointer;
+      padding: 12px 14px;
+      font-weight: 600;
+      color: #0f172a;
+      list-style: none;
+    }
+    .collapsible > summary::-webkit-details-marker { display: none; }
+    
+    body.dark .collapsible { background:#020617; border-color:#1f2937; }
+    body.dark .collapsible > summary { color:#e5e7eb; }
+    @media (max-width: 720px) {
+      td { display: grid; grid-template-columns: 108px 1fr; align-items: start; }
+      td::before { grid-column: 1; }
+      td > * { grid-column: 2; justify-self: start; }
+    
+      .word-pill, .fr-pill, .type-pill, .difficulty-pill {
+        display: inline-block;
+        width: auto;
+        max-width: 100%;
+        white-space: nowrap;
+      }
+    
+      /* Hide desktop action cell and use a kebab menu instead */
+      .actions-cell { display: none; }
+    
+      tbody tr { position: relative; }
+      .kebab-btn {
+        position: absolute;
+        top: 8px; right: 10px;
+        width: 32px; height: 32px;
+        border-radius: 999px;
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        display: none;              /* only show on phones */
+        align-items: center; justify-content: center;
+        font-size: 18px; line-height: 1;
+        z-index: 2;
+      }
+      /* show kebab on phones */
+      .kebab-btn { display: inline-flex; }
+    
+      .kebab-menu {
+        position: absolute;
+        right: 10px; top: 44px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(15,23,42,0.15);
+        overflow: hidden;
+        z-index: 3;
+      }
+      .kebab-menu button {
+        display: block; width: 140px;
+        padding: 10px 12px; border: 0; background: transparent; text-align: left;
+      }
+      .kebab-menu button:hover { background:#f1f5f9; }
+    
+      body.dark .kebab-btn { background:#0f172a; border-color:#1f2937; color:#e5e7eb; }
+      body.dark .kebab-menu { background:#020617; border-color:#1f2937; }
+      body.dark .kebab-menu button:hover { background:#111827; }
+    }
   </style>
-<link rel="manifest" href="manifest.json?v=8">
+<link rel="manifest" href="manifest.json?v=9">
 <meta name="theme-color" content="#2563eb">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="icons/icon-192.png" sizes="192x192">
@@ -964,44 +1031,47 @@
       </div>
 
       <!-- Add / edit word form -->
-      <form id="vocab-form">
-        <div>
-          <label for="word">Word EN</label>
-          <input id="word" required />
-        </div>
-        <div>
-          <label for="fr">Word FR</label>
-          <input id="fr" />
-        </div>
-        <div>
-          <label for="type">Type</label>
-          <select id="type">
-            <option value="">(choose one)</option>
-            <option>Verb</option>
-            <option>Noun</option>
-            <option>Adjective</option>
-            <option>Adverb</option>
-            <option>Prep</option>
-            <option>Expression</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div>
-          <label for="meaning">Meaning / Definition</label>
-          <input id="meaning" />
-        </div>
-        <div class="full-width">
-          <label for="comment">Comment</label>
-          <textarea id="comment"></textarea>
-        </div>
-        <div class="full-width">
-          <button type="submit" id="submit-btn" class="primary-btn">Add word</button>
-          <button type="button" id="cancel-edit" style="display:none;">Cancel edit</button>
-          <span id="editing-indicator" class="editing-indicator" style="display:none;">
-            Editing existing word…
-          </span>
-        </div>
-      </form>
+      <details id="vocab-form-wrap" class="collapsible">
+        <summary>Add a word</summary>
+        <form id="vocab-form">
+          <div>
+            <label for="word">Word EN</label>
+            <input id="word" required />
+          </div>
+          <div>
+            <label for="fr">Word FR</label>
+            <input id="fr" />
+          </div>
+          <div>
+            <label for="type">Type</label>
+            <select id="type">
+              <option value="">(choose one)</option>
+              <option>Verb</option>
+              <option>Noun</option>
+              <option>Adjective</option>
+              <option>Adverb</option>
+              <option>Prep</option>
+              <option>Expression</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="meaning">Meaning / Definition</label>
+            <input id="meaning" />
+          </div>
+          <div class="full-width">
+            <label for="comment">Comment</label>
+            <textarea id="comment"></textarea>
+          </div>
+          <div class="full-width">
+            <button type="submit" id="submit-btn" class="primary-btn">Add word</button>
+            <button type="button" id="cancel-edit" style="display:none;">Cancel edit</button>
+            <span id="editing-indicator" class="editing-indicator" style="display:none;">
+              Editing existing word…
+            </span>
+          </div>
+        </form>
+      </details>
 
       <!-- Quiz settings -->
       <div class="controls quiz-controls">
@@ -1141,42 +1211,45 @@
     </section>  
     <section id="rules-tab" class="tab-page hidden">
       <h2>Grammar & usage rules</h2>
-    
-      <form id="rules-form">
-        <div>
-          <label for="rule-title">Title</label>
-          <input id="rule-title" required />
-        </div>
-        <div>
-          <label for="rule-category">Category</label>
-          <select id="rule-category">
-            <option value="">(choose one)</option>
-            <option>Verb patterns</option>
-            <option>Tenses</option>
-            <option>Prepositions</option>
-            <option>Collocations</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="full-width">
-          <label for="rule-explanation">Explanation</label>
-          <textarea id="rule-explanation" required></textarea>
-        </div>
-        <div class="full-width">
-          <label for="rule-examples">Examples</label>
-          <textarea
-            id="rule-examples"
-            placeholder="One example per line"
-          ></textarea>
-        </div>
-        <div class="full-width">
-          <button type="submit" id="rule-submit-btn" class="primary-btn">Add rule</button>
-          <button type="button" id="rule-cancel-edit" style="display:none;">Cancel edit</button>
-          <span id="rule-editing-indicator" class="editing-indicator" style="display:none;">
-            Editing existing rule…
-          </span>
-        </div>
-      </form>
+
+      <details id="rules-form-wrap" class="collapsible">
+        <summary>Add a rule</summary>
+        <form id="rules-form">
+          <div>
+            <label for="rule-title">Title</label>
+            <input id="rule-title" required />
+          </div>
+          <div>
+            <label for="rule-category">Category</label>
+            <select id="rule-category">
+              <option value="">(choose one)</option>
+              <option>Verb patterns</option>
+              <option>Tenses</option>
+              <option>Prepositions</option>
+              <option>Collocations</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="full-width">
+            <label for="rule-explanation">Explanation</label>
+            <textarea id="rule-explanation" required></textarea>
+          </div>
+          <div class="full-width">
+            <label for="rule-examples">Examples</label>
+            <textarea
+              id="rule-examples"
+              placeholder="One example per line"
+            ></textarea>
+          </div>
+          <div class="full-width">
+            <button type="submit" id="rule-submit-btn" class="primary-btn">Add rule</button>
+            <button type="button" id="rule-cancel-edit" style="display:none;">Cancel edit</button>
+            <span id="rule-editing-indicator" class="editing-indicator" style="display:none;">
+              Editing existing rule…
+            </span>
+          </div>
+        </form>
+      </details>
       <div class="controls" id="rules-controls">
         <div>
           <label for="rules-search">Search</label>
@@ -1692,6 +1765,7 @@
         tr.innerHTML = `
           <td class="word-col" data-label="Word">
             ${buildPillGroup(item.word, 'word-pill')}
+            <button type="button" class="kebab-btn" title="More">⋮</button>
           </td>
           <td data-label="FR">${buildPillGroup(item.fr, 'fr-pill')}</td>
           <td data-label="Type">${typeCell}</td>
@@ -1850,6 +1924,73 @@
 
         renderTable();
       }
+    });
+    // Close any open kebab menus when tapping elsewhere
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.kebab-btn') || e.target.closest('.kebab-menu')) return;
+      document.querySelectorAll('.kebab-menu').forEach(m => m.remove());
+    });
+    
+    // Vocab kebab
+    tbody.addEventListener('click', (e) => {
+      const kb = e.target.closest('.kebab-btn');
+      if (!kb) return;
+      e.stopPropagation();
+      const tr = kb.closest('tr');
+      let menu = tr.querySelector('.kebab-menu');
+      if (menu) { menu.remove(); return; }
+      menu = document.createElement('div');
+      menu.className = 'kebab-menu';
+      menu.innerHTML = `
+        <button data-act="edit-word">Edit</button>
+        <button data-act="delete-word">Delete</button>
+      `;
+      tr.appendChild(menu);
+    
+      menu.addEventListener('click', (ev) => {
+        const id = tr.dataset.id;
+        if (ev.target.dataset.act === 'edit-word') {
+          const btn = tr.querySelector('.edit-btn');
+          btn?.click();
+        }
+        if (ev.target.dataset.act === 'delete-word') {
+          const btn = tr.querySelector('.delete-btn');
+          btn?.click();
+        }
+        menu.remove();
+      }, { once: true });
+    });
+    
+    // Rules kebab
+    rulesBody?.addEventListener('click', (e) => {
+      const kb = e.target.closest('.kebab-btn');
+      if (!kb) return;
+      e.stopPropagation();
+      const tr = kb.closest('tr');
+      let menu = tr.querySelector('.kebab-menu');
+      if (menu) { menu.remove(); return; }
+      menu = document.createElement('div');
+      menu.className = 'kebab-menu';
+      menu.innerHTML = `
+        <button data-act="details-rule">Show details</button>
+        <button data-act="edit-rule">Edit</button>
+        <button data-act="delete-rule">Delete</button>
+      `;
+      tr.appendChild(menu);
+    
+      menu.addEventListener('click', (ev) => {
+        const id = tr.dataset.id;
+        if (ev.target.dataset.act === 'details-rule') {
+          tr.querySelector('.details-rule-btn')?.click();
+        }
+        if (ev.target.dataset.act === 'edit-rule') {
+          tr.querySelector('.edit-rule-btn')?.click();
+        }
+        if (ev.target.dataset.act === 'delete-rule') {
+          tr.querySelector('.delete-rule-btn')?.click();
+        }
+        menu.remove();
+      }, { once: true });
     });
 
 
@@ -2511,7 +2652,10 @@
           : '';
 
         tr.innerHTML = `
-          <td class="rules-col-title" data-label="Title">${titleText}</td>
+          <td class="rules-col-title" data-label="Title">
+            ${titleText}
+            <button type="button" class="kebab-btn" title="More">⋮</button>
+          </td>
           <td data-label="Category">${categoryCell}</td>
           <td class="rules-col-explanation" data-label="Explanation">${shortExplanation}</td>
           <td class="rules-col-examples" data-label="Examples">${firstExample}</td>
@@ -2768,6 +2912,19 @@
 
   </script>
   <script>
+    function setupCollapsible(id, key) {
+      const d = document.getElementById(id);
+      if (!d) return;
+      const saved = localStorage.getItem(key);
+      if (saved === 'open') d.setAttribute('open', '');
+      d.addEventListener('toggle', () => {
+        localStorage.setItem(key, d.open ? 'open' : 'closed');
+      });
+    }
+    setupCollapsible('vocab-form-wrap', 'ui_vform_open');
+    setupCollapsible('rules-form-wrap', 'ui_rulesform_open');
+  </script>
+  <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -2778,6 +2935,7 @@
 </script>
 </body>
 </html>
+
 
 
 
