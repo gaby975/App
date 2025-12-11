@@ -40,6 +40,7 @@ function setupCollapsible(id, key) {
 
 setupCollapsible('vocab-form-wrap', 'ui_vform_open');
 setupCollapsible('rules-form-wrap', 'ui_rulesform_open');
+setupCollapsible('quiz-controls-wrap', 'ui_quizcontrols_open');
 
 // ---------- Service worker ----------
 if ('serviceWorker' in navigator) {
