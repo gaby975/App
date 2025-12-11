@@ -893,6 +893,37 @@
     @media (max-width: 720px) {
       .word-col, th.word-col { width: auto !important; }
     }
+    /* --- Fix mobile cards layout for BOTH tables --- */
+    @media (max-width: 720px) {
+      /* make sure the VALUE sits in column 2, the ::before label stays in column 1 */
+      td > * { grid-column: 2; }
+    
+      /* pills should size to content, not stretch */
+      .word-pill,
+      .fr-pill,
+      .type-pill,
+      .difficulty-pill {
+        display: inline-block;
+        width: auto;
+        max-width: 100%;
+      }
+    
+      /* action buttons row: remove desktop width and align to the right */
+      .actions-cell {
+        width: auto;                 /* override desktop 70px */
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .actions-cell button {
+        min-height: 36px;
+        padding: 6px 10px;
+      }
+    }
+    /* Keep pills tidy on any narrow container */
+    .word-pill, .fr-pill { white-space: nowrap; }
   </style>
 <link rel="manifest" href="manifest.json?v=7">
 <meta name="theme-color" content="#2563eb">
@@ -2747,6 +2778,7 @@
 </script>
 </body>
 </html>
+
 
 
 
