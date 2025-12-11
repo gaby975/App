@@ -4,9 +4,9 @@ const CACHE_NAME = 'app-cache-v7';
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json?v=7',
-  './icons/icon-192.png?v=7',
-  './icons/icon-512.png?v=7'
+  './manifest.json?v=8',
+  './icons/icon-192.png?v=8',
+  './icons/icon-512.png?v=8'
 ];
 
 self.addEventListener('install', event => {
@@ -44,4 +44,5 @@ self.addEventListener('fetch', event => {
     caches.match(req, { ignoreSearch: true }).then(resp => resp || fetch(req))
   );
 });
+
 
