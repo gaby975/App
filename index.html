@@ -5,12 +5,12 @@
   <title>My Vocabulary List</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="manifest" href="manifest.json?v=10">
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <meta name="theme-color" content="#2563eb">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="icon" href="icons/icon-192.png" sizes="192x192">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body>
   <div class="app-shell">
@@ -34,6 +34,7 @@
       </button>
     </div>
     <section id="vocab-tab" class="tab-page">
+      
       <!-- Word of the day -->
       <div class="controls" id="word-of-day-panel">
         <div>
@@ -41,7 +42,7 @@
           <ul id="word-of-day-list"></ul>
         </div>
       </div>
-
+      
       <!-- Add / edit word form -->
       <details id="vocab-form-wrap" class="collapsible">
         <summary>Add a word</summary>
@@ -85,44 +86,47 @@
         </form>
       </details>
 
-      <!-- Quiz settings -->
-      <div class="controls quiz-controls">
-        <div>
-          <label for="quiz-direction">Quiz direction</label>
-          <select id="quiz-direction">
-            <option value="en-fr">EN → FR</option>
-            <option value="fr-en">FR → EN</option>
-            <option value="mixed">Mixed</option>
-          </select>
+      <!-- Quiz settings (collapsible) -->
+      <details id="quiz-controls-wrap" class="collapsible">
+        <summary>Quiz settings</summary>
+        <div class="controls quiz-controls">
+          <div>
+            <label for="quiz-direction">Quiz direction</label>
+            <select id="quiz-direction">
+              <option value="en-fr">EN → FR</option>
+              <option value="fr-en">FR → EN</option>
+              <option value="mixed">Mixed</option>
+            </select>
+          </div>
+          <div>
+            <label for="quiz-mode">Mode</label>
+            <select id="quiz-mode">
+              <option value="typing">Typing</option>
+              <option value="multiple">Multiple choice</option>
+            </select>
+          </div>
+          <div>
+            <label for="quiz-count">Questions</label>
+            <select id="quiz-count">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="all">All available</option>
+            </select>
+          </div>
+          <div>
+            <label for="quiz-pool">Quiz pool</label>
+            <select id="quiz-pool">
+              <option value="all">All words</option>
+              <option value="hard">Only hard words</option>
+              <option value="due">Review due today</option>
+            </select>
+          </div>
+          <div>
+            <button type="button" id="start-quiz-btn" class="primary-btn">Start quiz</button>
+          </div>
         </div>
-        <div>
-          <label for="quiz-mode">Mode</label>
-          <select id="quiz-mode">
-            <option value="typing">Typing</option>
-            <option value="multiple">Multiple choice</option>
-          </select>
-        </div>
-        <div>
-          <label for="quiz-count">Questions</label>
-          <select id="quiz-count">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="all">All available</option>
-          </select>
-        </div>
-        <div>
-          <label for="quiz-pool">Quiz pool</label>
-          <select id="quiz-pool">
-            <option value="all">All words</option>
-            <option value="hard">Only hard words</option>
-            <option value="due">Review due today</option>
-          </select>
-        </div>
-        <div>
-          <button type="button" id="start-quiz-btn" class="primary-btn">Start quiz</button>
-        </div>
-      </div>
+      </details>
 
       <!-- Quiz area -->
       <div id="quiz-area" class="quiz-area" style="display:none;">
@@ -327,6 +331,7 @@
   <script src="export_import.js"></script>
 </body>
 </html>
+
 
 
 
