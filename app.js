@@ -15,8 +15,6 @@ const tbody = document.getElementById('vocab-body');
 const submitBtn = document.getElementById('submit-btn');
 const cancelEditBtn = document.getElementById('cancel-edit');
 const editingIndicator = document.getElementById('editing-indicator');
-const exportAllVocabBtn = document.getElementById('export-all-vocab-btn');
-const importAllVocabInput = document.getElementById('import-all-vocab-input');
 
 const pageSizeSelect = document.getElementById('page-size');
 const prevPageBtn = document.getElementById('prev-page');
