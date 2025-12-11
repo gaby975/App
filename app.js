@@ -915,11 +915,6 @@ tabButtons.forEach(btn => {
   });
 });
 
-
-  const tr = e.target.closest('tr');
-  const id = tr?.dataset.id;
-  if (!id) return;
-
 // ---------- Combined vocab + rules export / import (JSON only) ----------
 
 function buildExportData() {
