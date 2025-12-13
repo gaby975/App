@@ -1,51 +1,65 @@
-// sw.js
-const CACHE_NAME = 'app-cache-v10';
+const CACHE_NAME = 'vocab-app-v4';
 
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json?v=10',
-  './icons/icon-192.png?v=10',
-  './icons/icon-512.png?v=10'
+  './styles.css',
+  './manifest.json',
+  './helpers.js',
+  './theme_voice.js',
+  './rules.js',
+  './ui.js',
+  './word_of_day.js',
+  './app.js',
+  './quiz.js',
+  './export_import.js',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
-  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(ASSETS);
+    })
   );
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      );
+    })
   );
-  return self.clients.claim();
 });
 
-// Always serve the SPA shell for navigations, and ignore query strings for cache hits
 self.addEventListener('fetch', event => {
-  const req = event.request;
-
-  // App page loads and address bar navigations
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      caches.match('./index.html', { ignoreSearch: true })
-        .then(resp => resp || fetch('./index.html'))
-        .catch(() => caches.match('./index.html', { ignoreSearch: true }))
-    );
+  if (event.request.method !== 'GET') {
     return;
   }
 
-  // Static files and API requests
   event.respondWith(
-    caches.match(req, { ignoreSearch: true }).then(resp => resp || fetch(req))
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      return fetch(event.request)
+        .then(networkResponse => {
+          const cloned = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, cloned);
+          });
+          return networkResponse;
+        })
+        .catch(() => {
+          // If offline and not in cache, just fail normally
+          return caches.match('./index.html');
+        });
+    })
   );
 });
-
-
-
-
-
