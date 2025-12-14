@@ -848,7 +848,15 @@ body.dark td.rules-col-examples {
   form { grid-template-columns: 1fr; }
   .controls { padding: 10px; }
   #table-controls { align-items: stretch; }
-  #table-controls .control-search input { max-width: 100px; }
+  #table-controls .control-search {
+    flex: 0 0 auto;          /* do not grow to fill the row */
+  }
+  #table-controls .control-search input {
+    width: auto;             /* stop forcing full width */
+    max-width: none;
+    display: inline-block;
+    padding-inline: 8px;     /* keep it neat */
+  }
 
   /* Turn tables into stacked cards */
   table, thead, tbody, th, td, tr { display: block; }
