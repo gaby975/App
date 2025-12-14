@@ -233,7 +233,7 @@ button:active {
 }
 /* Quiz controls on one neat line on desktop */
 .quiz-controls {
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 12px;
 }
@@ -916,6 +916,7 @@ body.dark td.rules-col-examples {
   font-weight: 600;
   color: #0f172a;
   list-style: none;
+  text-align: center;
 }
 .collapsible > summary::-webkit-details-marker { display: none; }
 
