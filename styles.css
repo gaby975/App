@@ -835,50 +835,6 @@ body.dark td.rules-col-examples {
   color: #9ca3af;
 }
 
-/* Keep pills tidy on any narrow container */
-.word-pill, .fr-pill { white-space: nowrap; }
-.collapsible {
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  background: #f8fafc;
-  margin-bottom: 16px;
-}
-.collapsible > summary {
-  cursor: pointer;
-  padding: 12px 14px;
-  font-weight: 600;
-  color: #0f172a;
-  list-style: none;
-  text-align: center;
-}
-.collapsible > summary::-webkit-details-marker { display: none; }
-
-body.dark .collapsible { background:#020617; border-color:#1f2937; }
-body.dark .collapsible > summary { color:#e5e7eb; }
-
-/* row for New / Quiz / Filters */
-#vocab-panels-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-/* panels share the row, no extra bottom margin per panel */
-#vocab-panels-row .collapsible {
-  flex: 1 1 0;
-  margin-bottom: 0;
-}
-
-/* summaries look like small tabs */
-.collapsible > summary {
-  cursor: pointer;
-  padding: 10px 12px;
-  font-weight: 600;
-  color: #0f172a;
-  list-style: none;
-}
-
 /* Collapsible sections (New / Quiz / Filters etc.) */
 .collapsible {
   border: 1px solid #e2e8f0;
@@ -1121,6 +1077,16 @@ body.dark .collapsible > summary {
 
   body.dark .kebab-menu button:hover {
     background: #111827;
+  }
+  
+  td .word-pill,
+  td .fr-pill,
+  td .type-pill,
+  td .difficulty-pill {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: 100%;
+    white-space: nowrap;
   }
 }
 
