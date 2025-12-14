@@ -45,13 +45,20 @@ body {
 .top-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;   /* centre the header bar */
   margin-bottom: 12px;
 }
 
 .top-bar h1 {
   margin-bottom: 0;
+  text-align: center;        /* make sure the text itself is centred */
 }
+
+/* temporarily hide the buttons, we keep the JS logic */
+.top-bar-buttons {
+  display: none;
+}
+
 .top-bar-buttons {
   display: flex;
   gap: 8px;
