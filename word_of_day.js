@@ -11,11 +11,11 @@ function updateWordOfDay() {
     Number(today.toISOString().slice(0, 10).replace(/-/g, '')) ||
     today.getDate();
 
-  const count = Math.min(3, vocab.length);
+  const count = Math.min(1, vocab.length);
   const chosenIndexes = new Set();
   let tries = 0;
 
-  while (chosenIndexes.size < count && tries < vocab.length * 3) {
+  while (chosenIndexes.size < count && tries < vocab.length * 1) {
     const idx = (seedBase + tries * 97) % vocab.length;
     chosenIndexes.add(idx);
     tries++;
