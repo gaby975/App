@@ -54,15 +54,15 @@ body {
   text-align: center;        /* make sure the text itself is centred */
 }
 
-/* temporarily hide the buttons, we keep the JS logic */
-.top-bar-buttons {
-  display: none;
-}
-
 .top-bar-buttons {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+/* temporarily hide the buttons, we keep the JS logic */
+.top-bar-buttons {
+  display: none;
 }
 
 .theme-toggle-btn {
