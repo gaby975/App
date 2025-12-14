@@ -848,7 +848,7 @@ body.dark td.rules-col-examples {
   form { grid-template-columns: 1fr; }
   .controls { padding: 10px; }
   #table-controls { align-items: stretch; }
-  #table-controls .control-search input { max-width: 100%; }
+  #table-controls .control-search input { max-width: 100px; }
 
   /* Turn tables into stacked cards */
   table, thead, tbody, th, td, tr { display: block; }
