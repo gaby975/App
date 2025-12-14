@@ -250,11 +250,7 @@ button:active {
 .quiz-summary-list li {
   margin-bottom: 4px;
 }
-@media (max-width: 900px) {
-  .quiz-controls {
-    flex-wrap: wrap;
-  }
-}
+
 #vocab-tab.quiz-running > *:not(#quiz-area) {
   display: none;
 }
@@ -838,77 +834,6 @@ body.dark td.rules-col-explanation,
 body.dark td.rules-col-examples {
   color: #9ca3af;
 }
-/* Phone layout */
-@media (max-width: 720px) {
-  body { padding: 12px 0 28px; }
-  .app-shell { margin: 0 8px; padding: 14px 12px 20px; }
-  h1 { font-size: 1.6rem; }
-
-  /* Forms and controls in a single column */
-  form { grid-template-columns: 1fr; }
-  .controls { padding: 10px; }
-  #table-controls { align-items: stretch; }
-  #table-controls .control-search {
-    flex: 0 0 auto;          /* do not grow to fill the row */
-  }
-  #table-controls .control-search input {
-    width: auto !important;;             /* stop forcing full width */
-    max-width: 100px !important;;
-    display: inline-block;
-    padding-inline: 8px;     /* keep it neat */
-  }
-
-  /* Turn tables into stacked cards */
-  table, thead, tbody, th, td, tr { display: block; }
-  thead {
-    position: absolute; width: 1px; height: 1px; margin: -1px;
-    clip: rect(0 0 0 0); overflow: hidden;
-  }
-  tbody tr {
-    margin: 12px 0;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 10px;
-    background: #ffffff;
-  }
-  body.dark tbody tr {
-    border-color: #1f2937;
-    background: #0f172a;
-  }
-  td {
-    border: 0;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 8px 10px;
-    display: grid;
-    grid-template-columns: 108px 1fr;  /* label | value */
-    gap: 8px;
-  }
-  body.dark td { border-bottom-color: #1f2937; }
-  td:last-child { border-bottom: 0; }
-
-  /* Show the column name before each value */
-  td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #64748b;
-  }
-  body.dark td::before { color: #9ca3af; }
-
-  /* Remove desktop width constraints on phone */
-  th.col-meaning, td.col-meaning,
-  th.col-comment, td.col-comment,
-  th.rules-col-title, td.rules-col-title,
-  th.rules-col-explanation, td.rules-col-explanation,
-  th.rules-col-examples, td.rules-col-examples { width: auto; }
-
-  /* Action buttons row */
-  .actions-cell { display: flex; justify-content: flex-end; gap: 6px; }
-}
-
-/* Do not try to auto-widen the first column on phones */
-@media (max-width: 720px) {
-  .word-col, th.word-col { width: auto !important; }
-}
 
 /* Keep pills tidy on any narrow container */
 .word-pill, .fr-pill { white-space: nowrap; }
@@ -955,17 +880,128 @@ body.dark .collapsible > summary { color:#e5e7eb; }
 }
 
 @media (max-width: 720px) {
+  /* Overall layout */
+  body {
+    padding: 12px 0 28px;
+  }
+  .app-shell {
+    margin: 0 8px;
+    padding: 14px 12px 20px;
+  }
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  /* Forms and controls in a single column */
+  form {
+    grid-template-columns: 1fr;
+  }
+  .controls {
+    padding: 10px;
+  }
+
+  /* Quiz + filters row on mobile: keep both panels same height */
+  #vocab-panels-row {
+    align-items: stretch;
+  }
+  #vocab-panels-row .collapsible {
+    flex: 1 1 0;
+  }
+
+  /* Search bar: small, not stretching */
+  #table-controls {
+    align-items: stretch;
+  }
+  #table-controls .control-search {
+    flex: 0 0 auto;
+  }
+  #table-controls .control-search input {
+    width: auto;
+    max-width: 100px;
+    display: inline-block;
+    padding-inline: 8px;
+  }
+
+  /* Turn vocabulary table into stacked cards */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+  }
+  tbody tr {
+    margin: 12px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px;
+    background: #ffffff;
+    position: relative;   /* for the kebab button */
+  }
+  body.dark tbody tr {
+    border-color: #1f2937;
+    background: #0f172a;
+  }
+
   td {
-    display: grid;
-    grid-template-columns: 108px 1fr;
-    align-items: start;
     border: 0;
     border-bottom: 1px solid #e5e7eb;
     padding: 8px 10px;
+    display: grid;
+    grid-template-columns: 108px 1fr;  /* label | value */
+    align-items: start;
+    gap: 8px;
   }
-  td::before { grid-column: 1; font-weight: 600; color: #64748b; }
-  td > * { grid-column: 2; justify-self: start; }   /* key line */
+  body.dark td {
+    border-bottom-color: #1f2937;
+  }
+  td:last-child {
+    border-bottom: 0;
+  }
 
+  /* Show the column name before each value */
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    grid-column: 1;
+  }
+  body.dark td::before {
+    color: #9ca3af;
+  }
+  td > * {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  /* Remove desktop width constraints on mobile */
+  th.col-meaning,
+  td.col-meaning,
+  th.col-comment,
+  td.col-comment,
+  th.rules-col-title,
+  td.rules-col-title,
+  th.rules-col-explanation,
+  td.rules-col-explanation,
+  th.rules-col-examples,
+  td.rules-col-examples {
+    width: auto;
+  }
+
+  /* First column width and pills */
+  .word-col,
+  th.word-col {
+    width: auto;
+  }
   .word-pill,
   .fr-pill,
   .type-pill,
@@ -976,55 +1012,61 @@ body.dark .collapsible > summary { color:#e5e7eb; }
     white-space: nowrap;
   }
 
-  /* hide the desktop action cell and use the kebab */
-  .actions-cell { display: none; }
+  /* Hide desktop actions, use kebab instead */
+  .actions-cell {
+    display: none;
+  }
 
-  tbody tr { position: relative; }
   .kebab-btn {
     position: absolute;
-    top: 8px; right: 10px;
-    width: 32px; height: 32px;
+    top: 8px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
     border-radius: 999px;
     border: 1px solid #cbd5e1;
-    background: #fff;
+    background: #ffffff;
     display: inline-flex;
-    align-items: center; justify-content: center;
+    align-items: center;
+    justify-content: center;
     font-size: 18px;
     z-index: 2;
   }
+
   .kebab-menu {
     position: absolute;
-    right: 10px; top: 44px;
-    background: #fff;
+    right: 10px;
+    top: 44px;
+    background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(15,23,42,.15);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
     overflow: hidden;
     z-index: 3;
   }
-  .kebab-menu button { display: block; width: 140px; padding: 10px 12px; border: 0; background: transparent; text-align: left; }
-  .kebab-menu button:hover { background: #f1f5f9; }
+  .kebab-menu button {
+    display: block;
+    width: 140px;
+    padding: 10px 12px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+  }
+  .kebab-menu button:hover {
+    background: #f1f5f9;
+  }
+
+  body.dark .kebab-btn {
+    background: #0f172a;
+    border-color: #1f2937;
+    color: #e5e7eb;
+  }
+  body.dark .kebab-menu {
+    background: #020617;
+    border-color: #1f2937;
+  }
+  body.dark .kebab-menu button:hover {
+    background: #111827;
+  }
 }
 
-/* show kebab on phones */
-.kebab-btn { display: inline-flex; }
-
-.kebab-menu {
-  position: absolute;
-  right: 10px; top: 44px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(15,23,42,0.15);
-  overflow: hidden;
-  z-index: 3;
-}
-.kebab-menu button {
-  display: block; width: 140px;
-  padding: 10px 12px; border: 0; background: transparent; text-align: left;
-}
-.kebab-menu button:hover { background:#f1f5f9; }
-
-body.dark .kebab-btn { background:#0f172a; border-color:#1f2937; color:#e5e7eb; }
-body.dark .kebab-menu { background:#020617; border-color:#1f2937; }
-body.dark .kebab-menu button:hover { background:#111827; }
