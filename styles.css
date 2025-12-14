@@ -275,7 +275,7 @@ button:active {
   min-width: 220px;
 }
 #table-controls .control-search input {
-  max-width: 260px;
+  max-width: 100px;
 }
 #table-controls .control-filter,
 #table-controls .control-sort,
