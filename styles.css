@@ -904,13 +904,15 @@ body.dark .collapsible > summary {
     padding: 10px;
   }
 
-  /* Stack Quiz / Search panels vertically on phones */
+  /* Quiz and Search panels on the same row, they will wrap if needed */
   #vocab-panels-row {
-    flex-direction: column;
+    flex-wrap: wrap;
   }
 
   #vocab-panels-row .collapsible {
-    width: 100%;
+    flex: 1 1 0;
+    margin-bottom: 0;
+    width: auto;
   }
 
   /* Search bar: compact width */
@@ -919,11 +921,11 @@ body.dark .collapsible > summary {
   }
 
   #table-controls .control-search {
-    flex: 0 0 auto;       /* do not grow to full row */
+    flex: 0 0 auto;
   }
 
   #table-controls .control-search input {
-    width: auto;          /* shrink to content */
+    width: auto;
     max-width: 100px;
     display: inline-block;
     padding-inline: 8px;
@@ -968,6 +970,8 @@ body.dark .collapsible > summary {
     display: grid;
     grid-template-columns: 108px 1fr;  /* label | value */
     gap: 8px;
+    justify-items: start;              /* stop pills stretching */
+    align-items: center;
   }
 
   body.dark td {
@@ -990,11 +994,16 @@ body.dark .collapsible > summary {
   }
 
   /* Remove desktop width constraints on phones */
-  th.col-meaning, td.col-meaning,
-  th.col-comment, td.col-comment,
-  th.rules-col-title, td.rules-col-title,
-  th.rules-col-explanation, td.rules-col-explanation,
-  th.rules-col-examples, td.rules-col-examples {
+  th.col-meaning,
+  td.col-meaning,
+  th.col-comment,
+  td.col-comment,
+  th.rules-col-title,
+  td.rules-col-title,
+  th.rules-col-explanation,
+  td.rules-col-explanation,
+  th.rules-col-examples,
+  td.rules-col-examples {
     width: auto;
   }
 
@@ -1004,6 +1013,7 @@ body.dark .collapsible > summary {
     width: auto !important;
   }
 
+  /* Pills keep natural width */
   .word-pill,
   .fr-pill,
   .type-pill,
@@ -1078,14 +1088,5 @@ body.dark .collapsible > summary {
   body.dark .kebab-menu button:hover {
     background: #111827;
   }
-  
-  td .word-pill,
-  td .fr-pill,
-  td .type-pill,
-  td .difficulty-pill {
-    display: inline-block !important;
-    width: auto !important;
-    max-width: 100%;
-    white-space: nowrap;
-  }
 }
+
