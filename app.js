@@ -249,17 +249,32 @@ tbody.addEventListener('click', event => {
   if (button.classList.contains('edit-btn')) {
     const item = vocab.find(entry => entry.id === id);
     if (!item) return;
-
+  
+    // Open the "Add a word" details block and scroll to it
+    const formDetails = document.getElementById('vocab-form-wrap');
+    if (formDetails) {
+      formDetails.open = true; // makes the details expand
+      try {
+        formDetails.scrollIntoView({ behaviour: 'smooth', block: 'start' });
+      } catch (e) {
+        // older browsers without smooth scrolling support
+        formDetails.scrollIntoView();
+      }
+    }
+  
+    // Fill the form
     wordInput.value = item.word || '';
     frInput.value = item.fr || '';
     typeInput.value = item.type || '';
     meaningInput.value = item.meaning || '';
     commentInput.value = item.comment || '';
-
+  
     editingId = id;
     submitBtn.textContent = 'Save changes';
     cancelEditBtn.style.display = 'inline-block';
     editingIndicator.style.display = 'inline';
+  
+    // Focus the first field
     wordInput.focus();
   }
 
