@@ -60,6 +60,46 @@ function saveVocab(list) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
 }
 
+// ---------- Difficulty helpers for stats and quiz ----------
+function isHardWord(item) {
+  const label = getDifficultyLabel(item);
+  return label === 'Hard';
+}
+
+function isDueForReview(item) {
+  const last = item.lastReviewed;
+  if (!last) return true;
+
+  const label = getDifficultyLabel(item);
+  let days;
+  if (label === 'Easy') {
+    days = 7;
+  } else if (label === 'Medium') {
+    days = 3;
+  } else if (label === 'Hard') {
+    days = 1;
+  } else {
+    days = 0;
+  }
+
+  const msSince = Date.now() - last;
+  const daysSince = msSince / (1000 * 60 * 60 * 24);
+  return daysSince >= days;
+}
+
+// ---------- Stats ----------
+function updateStatsPanel() {
+  if (!statsTotal || !statsHard || !statsDue) return;
+
+  const total = vocab.length;
+  const hard  = vocab.filter(isHardWord).length;
+  const due   = vocab.filter(isDueForReview).length;
+
+  statsTotal.textContent = `Total words: ${total}`;
+  statsHard.textContent  = `Hard: ${hard}`;
+  statsDue.textContent   = `Due today: ${due}`;
+}
+
 // ---------- Table rendering ----------
 function resetEditingState() {
   editingId = null;
@@ -97,53 +137,26 @@ function getFilteredAndSortedList() {
 
   return filtered;
 }
-  
-function updateStatsPanel() {
-  if (!statsTotal || !statsHard || !statsDue) return;
-
-  const total = vocab.length;
-  const hard  = vocab.filter(isHardWord).length;
-  const due   = vocab.filter(isDueForReview).length;
-
-  statsTotal.textContent = `Total words: ${total}`;
-  statsHard.textContent  = `Hard: ${hard}`;
-  statsDue.textContent   = `Due today: ${due}`;
-}
-
-  const sortField = sortBy.value;
-
-  filtered.sort((a, b) => {
-    if (sortField === 'newest') {
-      return (b.createdAt || 0) - (a.createdAt || 0);
-    }
-    if (sortField === 'oldest') {
-      return (a.createdAt || 0) - (b.createdAt || 0);
-    }
-    const va = (a[sortField] || '').toLowerCase();
-    const vb = (b[sortField] || '').toLowerCase();
-    return va.localeCompare(vb);
-  });
-
-  return filtered;
-}
 
 function renderTable() {
+  updateStatsPanel();
+
   const filtered = getFilteredAndSortedList();
   const totalItems = filtered.length;
 
   const renderRow = (item) => {
     const tr = document.createElement('tr');
     tr.dataset.id = item.id;
-  
+
     const typeClass = (item.type || '').toLowerCase();
     const typeCell = item.type
       ? `<span class="type-pill type-${typeClass}">${escapeHtml(item.type)}</span>`
       : '';
-  
+
     const diffLabel = getDifficultyLabel(item);
     const diffClass = diffLabel.toLowerCase();
     const difficultyCell = `<span class="difficulty-pill diff-${diffClass}">${diffLabel}</span>`;
-  
+
     tr.innerHTML = `
       <td class="word-col" data-label="Word">
         ${buildPillGroup(item.word, 'word-pill')}
@@ -165,7 +178,6 @@ function renderTable() {
     `;
     tbody.appendChild(tr);
   };
-
 
   if (pageSize === 'all') {
     totalPages = 1;
@@ -217,7 +229,6 @@ function renderTable() {
 
   adjustWordColumnWidth();
   updateWordOfDay();
-  updateStatsPanel();
 }
 
 // ---------- Form events ----------
@@ -268,7 +279,6 @@ tbody.addEventListener('click', event => {
   const id = tr.dataset.id;
   if (!id) return;
 
-  // Click on the word cell → speak
   if (event.target.closest('td.word-col') && !event.target.closest('button')) {
     const item = vocab.find(entry => entry.id === id);
     if (item && item.word) {
@@ -283,32 +293,27 @@ tbody.addEventListener('click', event => {
   if (button.classList.contains('edit-btn')) {
     const item = vocab.find(entry => entry.id === id);
     if (!item) return;
-  
-    // Open the "Add a word" details block and scroll to it
+
     const formDetails = document.getElementById('vocab-form-wrap');
     if (formDetails) {
-      formDetails.open = true; // makes the details expand
+      formDetails.open = true;
       try {
         formDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (e) {
-        // older browsers without smooth scrolling support
         formDetails.scrollIntoView();
       }
     }
-  
-    // Fill the form
+
     wordInput.value = item.word || '';
     frInput.value = item.fr || '';
     typeInput.value = item.type || '';
     meaningInput.value = item.meaning || '';
     commentInput.value = item.comment || '';
-  
+
     editingId = id;
     submitBtn.textContent = 'Save changes';
     cancelEditBtn.style.display = 'inline-block';
     editingIndicator.style.display = 'inline';
-  
-    // Focus the first field
     wordInput.focus();
   }
 
@@ -386,5 +391,5 @@ nextPageBtn.addEventListener('click', () => {
   }
 });
 
-// Initial render for vocab
+// Initial render
 renderTable();
