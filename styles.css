@@ -922,6 +922,29 @@ body.dark td.rules-col-examples {
 body.dark .collapsible { background:#020617; border-color:#1f2937; }
 body.dark .collapsible > summary { color:#e5e7eb; }
 
+/* row for New / Quiz / Filters */
+#vocab-panels-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* panels share the row, no extra bottom margin per panel */
+#vocab-panels-row .collapsible {
+  flex: 1 1 0;
+  margin-bottom: 0;
+}
+
+/* summaries look like small tabs */
+.collapsible > summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  font-weight: 600;
+  color: #0f172a;
+  list-style: none;
+}
+
 @media (max-width: 720px) {
   td {
     display: grid;
