@@ -879,15 +879,62 @@ body.dark .collapsible > summary { color:#e5e7eb; }
   list-style: none;
 }
 
+/* Collapsible sections (New / Quiz / Filters etc.) */
+.collapsible {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  margin-bottom: 16px;
+}
+.collapsible > summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  font-weight: 600;
+  color: #0f172a;
+  list-style: none;
+  text-align: center;
+}
+.collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+body.dark .collapsible {
+  background: #020617;
+  border-color: #1f2937;
+}
+body.dark .collapsible > summary {
+  color: #e5e7eb;
+}
+
+/* Row for Quiz / Filters panels on wide screens */
+#vocab-panels-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+#vocab-panels-row .collapsible {
+  flex: 1 1 0;
+  margin-bottom: 0;
+}
+
+/* Hide kebab menu by default (desktop) */
+.kebab-btn,
+.kebab-menu {
+  display: none;
+}
+
+/* Phone layout */
 @media (max-width: 720px) {
-  /* Overall layout */
   body {
     padding: 12px 0 28px;
   }
+
   .app-shell {
     margin: 0 8px;
     padding: 14px 12px 20px;
   }
+
   h1 {
     font-size: 1.6rem;
   }
@@ -896,33 +943,37 @@ body.dark .collapsible > summary { color:#e5e7eb; }
   form {
     grid-template-columns: 1fr;
   }
+
   .controls {
     padding: 10px;
   }
 
-  /* Quiz + filters row on mobile: keep both panels same height */
+  /* Stack Quiz / Search panels vertically on phones */
   #vocab-panels-row {
-    align-items: stretch;
-  }
-  #vocab-panels-row .collapsible {
-    flex: 1 1 0;
+    flex-direction: column;
   }
 
-  /* Search bar: small, not stretching */
+  #vocab-panels-row .collapsible {
+    width: 100%;
+  }
+
+  /* Search bar: compact width */
   #table-controls {
     align-items: stretch;
   }
+
   #table-controls .control-search {
-    flex: 0 0 auto;
+    flex: 0 0 auto;       /* do not grow to full row */
   }
+
   #table-controls .control-search input {
-    width: auto;
+    width: auto;          /* shrink to content */
     max-width: 100px;
     display: inline-block;
     padding-inline: 8px;
   }
 
-  /* Turn vocabulary table into stacked cards */
+  /* Table becomes stacked cards */
   table,
   thead,
   tbody,
@@ -931,6 +982,7 @@ body.dark .collapsible > summary { color:#e5e7eb; }
   tr {
     display: block;
   }
+
   thead {
     position: absolute;
     width: 1px;
@@ -939,14 +991,15 @@ body.dark .collapsible > summary { color:#e5e7eb; }
     clip: rect(0 0 0 0);
     overflow: hidden;
   }
+
   tbody tr {
     margin: 12px 0;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 10px;
     background: #ffffff;
-    position: relative;   /* for the kebab button */
   }
+
   body.dark tbody tr {
     border-color: #1f2937;
     background: #0f172a;
@@ -958,50 +1011,43 @@ body.dark .collapsible > summary { color:#e5e7eb; }
     padding: 8px 10px;
     display: grid;
     grid-template-columns: 108px 1fr;  /* label | value */
-    align-items: start;
     gap: 8px;
   }
+
   body.dark td {
     border-bottom-color: #1f2937;
   }
+
   td:last-child {
     border-bottom: 0;
   }
 
-  /* Show the column name before each value */
+  /* Column labels in card layout */
   td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #64748b;
-    grid-column: 1;
   }
+
   body.dark td::before {
     color: #9ca3af;
   }
-  td > * {
-    grid-column: 2;
-    justify-self: start;
-  }
 
-  /* Remove desktop width constraints on mobile */
-  th.col-meaning,
-  td.col-meaning,
-  th.col-comment,
-  td.col-comment,
-  th.rules-col-title,
-  td.rules-col-title,
-  th.rules-col-explanation,
-  td.rules-col-explanation,
-  th.rules-col-examples,
-  td.rules-col-examples {
+  /* Remove desktop width constraints on phones */
+  th.col-meaning, td.col-meaning,
+  th.col-comment, td.col-comment,
+  th.rules-col-title, td.rules-col-title,
+  th.rules-col-explanation, td.rules-col-explanation,
+  th.rules-col-examples, td.rules-col-examples {
     width: auto;
   }
 
-  /* First column width and pills */
+  /* First column width in card layout */
   .word-col,
   th.word-col {
-    width: auto;
+    width: auto !important;
   }
+
   .word-pill,
   .fr-pill,
   .type-pill,
@@ -1012,9 +1058,13 @@ body.dark .collapsible > summary { color:#e5e7eb; }
     white-space: nowrap;
   }
 
-  /* Hide desktop actions, use kebab instead */
+  /* Replace desktop action buttons by kebab menu */
   .actions-cell {
     display: none;
+  }
+
+  tbody tr {
+    position: relative;
   }
 
   .kebab-btn {
@@ -1044,6 +1094,7 @@ body.dark .collapsible > summary { color:#e5e7eb; }
     overflow: hidden;
     z-index: 3;
   }
+
   .kebab-menu button {
     display: block;
     width: 140px;
@@ -1052,6 +1103,7 @@ body.dark .collapsible > summary { color:#e5e7eb; }
     background: transparent;
     text-align: left;
   }
+
   .kebab-menu button:hover {
     background: #f1f5f9;
   }
@@ -1061,12 +1113,15 @@ body.dark .collapsible > summary { color:#e5e7eb; }
     border-color: #1f2937;
     color: #e5e7eb;
   }
+
   body.dark .kebab-menu {
     background: #020617;
     border-color: #1f2937;
   }
+
   body.dark .kebab-menu button:hover {
     background: #111827;
   }
 }
+
 
