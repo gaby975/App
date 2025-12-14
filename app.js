@@ -80,6 +80,23 @@ function getFilteredAndSortedList() {
     const matchesSearch = !search || text.includes(search);
     return matchesType && matchesSearch;
   });
+
+  const sortField = sortBy.value;
+
+  filtered.sort((a, b) => {
+    if (sortField === 'newest') {
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    }
+    if (sortField === 'oldest') {
+      return (a.createdAt || 0) - (b.createdAt || 0);
+    }
+    const va = (a[sortField] || '').toLowerCase();
+    const vb = (b[sortField] || '').toLowerCase();
+    return va.localeCompare(vb);
+  });
+
+  return filtered;
+}
   
 function updateStatsPanel() {
   if (!statsTotal || !statsHard || !statsDue) return;
@@ -272,7 +289,7 @@ tbody.addEventListener('click', event => {
     if (formDetails) {
       formDetails.open = true; // makes the details expand
       try {
-        formDetails.scrollIntoView({ behaviour: 'smooth', block: 'start' });
+        formDetails.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch (e) {
         // older browsers without smooth scrolling support
         formDetails.scrollIntoView();
