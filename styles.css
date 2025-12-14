@@ -215,7 +215,15 @@ button:active {
   font-weight: 500;
   white-space: nowrap;
 }
-
+#stats-panel .stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+#stats-panel .stats-row span {
+  white-space: nowrap;
+}
 /* Quiz controls on one neat line on desktop */
 .quiz-controls {
   flex-wrap: nowrap;
