@@ -21,6 +21,10 @@ const prevPageBtn = document.getElementById('prev-page');
 const nextPageBtn = document.getElementById('next-page');
 const pageInfo = document.getElementById('page-info');
 
+const statsTotal = document.getElementById('stats-total');
+const statsHard  = document.getElementById('stats-hard');
+const statsDue   = document.getElementById('stats-due');
+
 const STORAGE_KEY = 'my_vocab_list_v3';
 
 let vocab = loadVocab();
@@ -76,6 +80,18 @@ function getFilteredAndSortedList() {
     const matchesSearch = !search || text.includes(search);
     return matchesType && matchesSearch;
   });
+  
+function updateStatsPanel() {
+  if (!statsTotal || !statsHard || !statsDue) return;
+
+  const total = vocab.length;
+  const hard  = vocab.filter(isHardWord).length;
+  const due   = vocab.filter(isDueForReview).length;
+
+  statsTotal.textContent = `Total words: ${total}`;
+  statsHard.textContent  = `Hard: ${hard}`;
+  statsDue.textContent   = `Due today: ${due}`;
+}
 
   const sortField = sortBy.value;
 
@@ -184,6 +200,7 @@ function renderTable() {
 
   adjustWordColumnWidth();
   updateWordOfDay();
+  updateStatsPanel();
 }
 
 // ---------- Form events ----------
