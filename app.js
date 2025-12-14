@@ -222,7 +222,8 @@ function renderTable() {
   pageItems.forEach(renderRow);
 
   pageInfo.textContent =
-    `Page ${currentPage} of ${totalPages} (${totalItems} word${totalItems === 1 ? '' : 's'})`;
+    `${currentPage}/${totalPages} (${totalItems} word${totalItems === 1 ? '' : 's'})`;
+
 
   prevPageBtn.disabled = currentPage <= 1;
   nextPageBtn.disabled = currentPage >= totalPages;
