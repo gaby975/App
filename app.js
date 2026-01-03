@@ -339,7 +339,7 @@ tbody.addEventListener('click', (e) => {
   let menu = tr.querySelector('.kebab-menu');
   if (menu) { menu.remove(); return; }
   menu = document.createElement('div');
-  menu.className = 'kebab-menu';
+  menu.className = 'kebab-menu open';
   menu.innerHTML = `
     <button data-act="edit-word">Edit</button>
     <button data-act="delete-word">Delete</button>
