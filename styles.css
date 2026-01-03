@@ -180,10 +180,10 @@ button:active {
   transition: max-height 0.35s ease, opacity 0.25s ease;
 }
 
-/* When details is open, expand */
+/* Rest state when fully open (JS keeps max-height inline during animation) */
 details[open] .collapsible-content {
-  max-height: 600px;   /* large enough for content */
   opacity: 1;
+  max-height: none;
 }
 
 @keyframes rowFadeIn {
@@ -215,9 +215,6 @@ details[open] .collapsible-content {
   }
 }
 
-#wod-current-pill {
-  animation: softPulse 2.4s ease-out infinite;
-}
 @media (min-width: 720px) {
   .controls > div {
     flex-direction: row;
@@ -266,6 +263,7 @@ details[open] .collapsible-content {
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
+  animation: softPulse 2.4s ease-out infinite;
 }
 #stats-panel .stats-row {
   display: flex;
@@ -422,6 +420,30 @@ th.col-comment, td.col-comment {
 .word-pill {
   background: #f3e8ff;
   color: #6b21a8;
+}
+
+.word-pill,
+.fr-pill,
+.type-pill,
+.difficulty-pill {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.word-pill:hover,
+.fr-pill:hover,
+.type-pill:hover,
+.difficulty-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+}
+
+.primary-btn {
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
 }
 .fr-pill {
   background: #e5e7eb;
@@ -924,23 +946,17 @@ body.dark .collapsible > summary {
   display: none;          /* hidden on desktop */
 }
 .kebab-menu {
-  display: none;          /* menu hidden by default */
-}
-/* shown when JS toggles the "open" class */
-.kebab-menu.open {
-  display: block;
-}
-.kebab-menu {
   transform-origin: top right;
   transform: scale(0.9);
   opacity: 0;
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
 .kebab-menu.open {
   transform: scale(1);
   opacity: 1;
 }
+
+
 /* Phone layout */
 @media (max-width: 720px) {
   body {
@@ -1148,6 +1164,41 @@ body.dark .collapsible > summary {
 
   body.dark .kebab-menu button:hover {
     background: #111827;
+  }
+  
+  /* Stronger card borders on mobile */
+  tbody tr {
+    border-width: 2px;
+  }
+
+  /* Top and bottom fade on the screen */
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 40px;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  body::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(241, 245, 249, 1), rgba(241, 245, 249, 0));
+  }
+
+  body::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(241, 245, 249, 1), rgba(241, 245, 249, 0));
+  }
+
+  body.dark::before {
+    background: linear-gradient(to bottom, rgba(2, 6, 23, 1), rgba(2, 6, 23, 0));
+  }
+
+  body.dark::after {
+    background: linear-gradient(to top, rgba(2, 6, 23, 1), rgba(2, 6, 23, 0));
   }
 }
 
