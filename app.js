@@ -160,7 +160,7 @@ function renderTable() {
     tr.innerHTML = `
       <td class="word-col" data-label="Word">
         ${buildPillGroup(item.word, 'word-pill')}
-        <button type="button" class="kebab-btn" title="More">⋮</button>
+        <button class="kebab-btn" type="button" onclick="toggleKebabMenu(this)">⋮</button>
       </td>
       <td data-label="FR">${buildPillGroup(item.fr, 'fr-pill')}</td>
       <td data-label="Type">${typeCell}</td>
