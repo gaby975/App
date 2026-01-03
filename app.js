@@ -164,7 +164,7 @@ function renderTable() {
     tr.innerHTML = `
       <td class="word-col" data-label="Word">
         ${buildPillGroup(item.word, 'word-pill')}
-        <button class="kebab-btn" type="button" onclick="toggleKebabMenu(this)">⋮</button>
+        <button class="kebab-btn" type="button">⋮</button>
       </td>
       <td data-label="FR">${buildPillGroup(item.fr, 'fr-pill')}</td>
       <td data-label="Type">${typeCell}</td>
@@ -338,18 +338,33 @@ tbody.addEventListener('click', event => {
 tbody.addEventListener('click', (e) => {
   const kb = e.target.closest('.kebab-btn');
   if (!kb) return;
+
   e.stopPropagation();
   const tr = kb.closest('tr');
   let menu = tr.querySelector('.kebab-menu');
-  if (menu) { menu.remove(); return; }
+
+  // If a menu is already open on this row, close it with animation
+  if (menu) {
+    menu.classList.remove('open');
+    menu.addEventListener('transitionend', () => menu.remove(), { once: true });
+    return;
+  }
+
+  // Otherwise create it
   menu = document.createElement('div');
-  menu.className = 'kebab-menu open';
+  menu.className = 'kebab-menu';
   menu.innerHTML = `
     <button data-act="edit-word">Edit</button>
     <button data-act="delete-word">Delete</button>
   `;
   tr.appendChild(menu);
 
+  // Trigger the pop-in
+  requestAnimationFrame(() => {
+    menu.classList.add('open');
+  });
+
+  // Relay clicks to the existing edit/delete buttons
   menu.addEventListener('click', (ev) => {
     const id = tr.dataset.id;
     if (ev.target.dataset.act === 'edit-word') {
@@ -360,7 +375,9 @@ tbody.addEventListener('click', (e) => {
       const btn = tr.querySelector('.delete-btn');
       btn?.click();
     }
-    menu.remove();
+    // Close the menu after an action
+    menu.classList.remove('open');
+    menu.addEventListener('transitionend', () => menu.remove(), { once: true });
   }, { once: true });
 });
 
