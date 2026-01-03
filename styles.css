@@ -946,7 +946,39 @@ body.dark .collapsible > summary {
   tr {
     display: block;
   }
+    #rules-tab thead {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    clip: auto;
+    overflow: visible;
+  }
 
+  #rules-tab tbody tr {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+  }
+
+  #rules-tab td {
+    display: table-cell;
+    border: 1px solid #ddd;
+    padding: 6px 8px;
+    border-bottom: 1px solid #ddd;
+    grid-template-columns: none;
+  }
+
+  #rules-tab td::before {
+    content: none;
+  }
+
+  body.dark #rules-tab td {
+    border-color: #1f2937;
+  }
+  
   thead {
     position: absolute;
     width: 1px;
