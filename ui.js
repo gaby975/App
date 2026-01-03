@@ -1,8 +1,10 @@
 // ---------- Kebab closing for the whole app ----------
 function closeKebabs() {
-  document.querySelectorAll('.kebab-menu').forEach(m => m.remove());
+  document.querySelectorAll('.kebab-menu.open').forEach(menu => {
+    menu.classList.remove('open');
+    menu.addEventListener('transitionend', () => menu.remove(), { once: true });
+  });
 }
-
 document.addEventListener('click', (e) => {
   if (e.target.closest('.kebab-btn') || e.target.closest('.kebab-menu')) return;
   closeKebabs();
