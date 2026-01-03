@@ -238,7 +238,6 @@ rulesBody?.addEventListener('click', (e) => {
     menu = document.createElement('div');
     menu.className = 'kebab-menu open';
     menu.innerHTML = `
-      <button data-act="details-rule">Show details</button>
       <button data-act="edit-rule">Edit</button>
       <button data-act="delete-rule">Delete</button>
     `;
@@ -247,9 +246,6 @@ rulesBody?.addEventListener('click', (e) => {
     menu.addEventListener('click', (ev) => {
       const action = ev.target.dataset.act;
       if (!action) return;
-      if (action === 'details-rule') {
-        tr.querySelector('.details-rule-btn')?.click();
-      }
       if (action === 'edit-rule') {
         tr.querySelector('.edit-rule-btn')?.click();
       }
@@ -299,6 +295,48 @@ rulesBody?.addEventListener('click', (e) => {
     detailsRow.style.display = isVisible ? 'none' : 'table-row';
   }
 });
+
+// ---------- Rules: click explanation/examples to toggle details ----------
+(function () {
+  const rulesBody = document.getElementById('rules-body');
+  if (!rulesBody) return;
+
+  function toggleRuleDetailsRow(mainRow) {
+    if (!mainRow) return;
+    const detailsRow = mainRow.nextElementSibling;
+    if (!detailsRow || !detailsRow.classList.contains('rule-details-row')) {
+      return;
+    }
+
+    const isHidden = detailsRow.style.display === 'none';
+
+    // Optionally close any other open details rows
+    document
+      .querySelectorAll('#rules-body .rule-details-row')
+      .forEach(row => {
+        if (row !== detailsRow) row.style.display = 'none';
+      });
+
+    // If it was hidden, let CSS take over by clearing inline style,
+    // otherwise hide it.
+    detailsRow.style.display = isHidden ? '' : 'none';
+  }
+
+  rulesBody.addEventListener('click', (e) => {
+    const cell = e.target.closest('td');
+    if (!cell) return;
+
+    // Only react when the Explanation or Examples cell is clicked
+    if (
+      cell.classList.contains('rules-col-explanation') ||
+      cell.classList.contains('rules-col-examples')
+    ) {
+      const mainRow = cell.closest('tr');
+      toggleRuleDetailsRow(mainRow);
+    }
+  });
+})();
+
 
 // Initial render
 renderRulesTable();
