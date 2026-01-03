@@ -52,37 +52,29 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Kebab menu behaviour for mobile cards
-document.addEventListener('DOMContentLoaded', () => {
-  document.addEventListener('click', (event) => {
-    const kebabBtn = event.target.closest('.kebab-btn');
-    const menuClick = event.target.closest('.kebab-menu');
-    const openMenus = document.querySelectorAll('.kebab-menu.open');
+// Global helper for the three dots menu
+function toggleKebabMenu(button) {
+  // Find the row of this button
+  const row = button.closest('tr');
+  if (!row) return;
 
-    // Click outside any menu closes all
-    if (!kebabBtn && !menuClick) {
-      openMenus.forEach(m => m.classList.remove('open'));
-      return;
-    }
+  // Find the menu in that row
+  const menu = row.querySelector('.kebab-menu');
+  if (!menu) return;
 
-    // Click on the three dots
-    if (kebabBtn) {
-      event.stopPropagation();
-      const row = kebabBtn.closest('tr');
-      if (!row) return;
-      const menu = row.querySelector('.kebab-menu');
-      if (!menu) return;
+  const isOpen = menu.classList.contains('open');
 
-      const isOpen = menu.classList.contains('open');
-
-      // Close other menus
-      openMenus.forEach(m => {
-        if (m !== menu) m.classList.remove('open');
-      });
-
-      // Toggle this one
-      menu.classList.toggle('open', !isOpen);
-    }
+  // Close any other open menus
+  document.querySelectorAll('.kebab-menu.open').forEach(m => {
+    if (m !== menu) m.classList.remove('open');
   });
-});
+
+  // Toggle this one
+  if (!isOpen) {
+    menu.classList.add('open');
+  } else {
+    menu.classList.remove('open');
+  }
+}
+
 
