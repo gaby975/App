@@ -147,6 +147,10 @@ function renderTable() {
   const renderRow = (item) => {
     const tr = document.createElement('tr');
     tr.dataset.id = item.id;
+    tr.classList.add('row-fade-in');
+    tr.addEventListener('animationend', () => {
+      tr.classList.remove('row-fade-in');
+    });
 
     const typeClass = (item.type || '').toLowerCase();
     const typeCell = item.type
