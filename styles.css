@@ -875,9 +875,15 @@ body.dark .collapsible > summary {
 }
 
 /* Hide kebab menu by default (desktop) */
-.kebab-btn,
+.kebab-btn {
+  display: none;          /* hidden on desktop */
+}
 .kebab-menu {
-  display: none;
+  display: none;          /* menu hidden by default */
+}
+/* shown when JS toggles the "open" class */
+.kebab-menu.open {
+  display: block;
 }
 
 /* Phone layout */
