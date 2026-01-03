@@ -100,96 +100,94 @@
         </div>
       </details>
   
-        <!-- Quiz settings (collapsible) -->
+      <!-- Quiz settings (collapsible) -->
       <div id="vocab-panels-row">
         <details id="quiz-controls-wrap" class="collapsible">
           <summary>Quiz settings</summary>
           <div class="collapsible-content">
-          <div class="controls quiz-controls">
-            <div>
-              <label for="quiz-direction">Quiz direction</label>
-              <select id="quiz-direction">
-                <option value="en-fr">EN → FR</option>
-                <option value="fr-en">FR → EN</option>
-                <option value="mixed">Mixed</option>
-              </select>
+            <div class="controls quiz-controls">
+              <div>
+                <label for="quiz-direction">Quiz direction</label>
+                <select id="quiz-direction">
+                  <option value="en-fr">EN → FR</option>
+                  <option value="fr-en">FR → EN</option>
+                  <option value="mixed">Mixed</option>
+                </select>
+              </div>
+              <div>
+                <label for="quiz-mode">Mode</label>
+                <select id="quiz-mode">
+                  <option value="typing">Typing</option>
+                  <option value="multiple">MCQ</option>
+                </select>
+              </div>
+              <div>
+                <label for="quiz-count">Questions</label>
+                <select id="quiz-count">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
+              <div>
+                <label for="quiz-pool">Quiz pool</label>
+                <select id="quiz-pool">
+                  <option value="all">All</option>
+                  <option value="hard">Hard</option>
+                  <option value="due">Review</option>
+                </select>
+              </div>
+              <div>
+                <button type="button" id="start-quiz-btn" class="primary-btn">Start quiz</button>
+              </div>
             </div>
-            <div>
-              <label for="quiz-mode">Mode</label>
-              <select id="quiz-mode">
-                <option value="typing">Typing</option>
-                <option value="multiple">MCQ</option>
-              </select>
-            </div>
-            </div>
-            <div>
-              <label for="quiz-count">Questions</label>
-              <select id="quiz-count">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="all">All</option>
-              </select>
-            </div>
-            <div>
-              <label for="quiz-pool">Quiz pool</label>
-              <select id="quiz-pool">
-                <option value="all">All</option>
-                <option value="hard">Hard</option>
-                <option value="due">Review</option>
-              </select>
-            </div>
-            <div>
-              <button type="button" id="start-quiz-btn" class="primary-btn">Start quiz</button>
-            </div>
-          </div>
           </div>
         </details>
-          
+
         <!-- Search / filter / sort / words per page -->
         <details id="table-controls-wrap" class="collapsible">
           <summary>Search and filters</summary>
           <div class="collapsible-content">
-          <div class="controls" id="table-controls">
-            <div class="control-search">
-              <label for="search">Search</label>
-              <input id="search" placeholder="Search…" />
+            <div class="controls" id="table-controls">
+              <div class="control-search">
+                <label for="search">Search</label>
+                <input id="search" placeholder="Search…" />
+              </div>
+              <div class="control-filter">
+                <label for="filter-type">Filter by type</label>
+                <select id="filter-type">
+                  <option value="">All</option>
+                  <option>Verb</option>
+                  <option>Noun</option>
+                  <option>Adj</option>
+                  <option>Adverb</option>
+                  <option>Prep</option>
+                  <option>Exp</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="control-sort">
+                <label for="sort-by">Sort by</label>
+                <select id="sort-by">
+                  <option value="word">EN (A–Z)</option>
+                  <option value="fr">FR (A–Z)</option>
+                  <option value="type">Type</option>
+                  <option value="newest">Date (new)</option>
+                  <option value="oldest">Date (old)</option>
+                </select>
+              </div>
+              <div class="control-page-size">
+                <label for="page-size">Words per page</label>
+                <select id="page-size">
+                  <option value="10">10</option>
+                  <option value="25" selected>25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                  <option value="all">All</option>
+                </select>
+              </div>
             </div>
-            <div class="control-filter">
-              <label for="filter-type">Filter by type</label>
-              <select id="filter-type">
-                <option value="">All</option>
-                <option>Verb</option>
-                <option>Noun</option>
-                <option>Adj</option>
-                <option>Adverb</option>
-                <option>Prep</option>
-                <option>Exp</option>
-                <option>Other</option>
-              </select>
-            </div>
-            </div>
-            <div class="control-sort">
-              <label for="sort-by">Sort by</label>
-              <select id="sort-by">
-                <option value="word">EN (A–Z)</option>
-                <option value="fr">FR (A–Z)</option>
-                <option value="type">Type</option>
-                <option value="newest">Date (new)</option>
-                <option value="oldest">Date (old)</option>
-              </select>
-            </div>
-            <div class="control-page-size">
-              <label for="page-size">Words per page</label>
-              <select id="page-size">
-                <option value="10">10</option>
-                <option value="25" selected>25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="all">All</option>
-              </select>
-            </div>
-          </div>
           </div>
         </details>
       </div>
@@ -358,6 +356,7 @@
   <script src="export_import.js"></script>
 </body>
 </html>
+
 
 
 
