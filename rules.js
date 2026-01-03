@@ -236,7 +236,7 @@ rulesBody?.addEventListener('click', (e) => {
       return;
     }
     menu = document.createElement('div');
-    menu.className = 'kebab-menu';
+    menu.className = 'kebab-menu open';
     menu.innerHTML = `
       <button data-act="details-rule">Show details</button>
       <button data-act="edit-rule">Edit</button>
